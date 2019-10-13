@@ -12,28 +12,49 @@ class App extends Component {
     super(props);
   
     this.state = {
-      isAuthenticated: false
+      isAuthenticated: false,
+      isPending: true,
+      isAdmin: false
     };
   }
   
-  userHasAuthenticated = authenticated => {
-    this.setState({ isAuthenticated: authenticated })
+  userHasAuthenticated = (isAuthenticated, isPending, isAdmin) => {
+    this.setState({ 
+      isAuthenticated: isAuthenticated,
+      isPending: isPending,
+      isAdmin: isAdmin
+    })
   }
 
   handleLogout = event => {
-    this.userHasAuthenticated(false)
+    this.userHasAuthenticated(false, false, false)
     Session.resetSessionCookie()
   }  
 
   componentWillMount() {
-    if (!Utils.isEmpty(Session.getSessionCookie()))
-    this.userHasAuthenticated(true)
+    let session = Session.getSessionCookie()
+    let isAuthenticated = false
+    let isAdmin = false
+    let isPending = false
+
+    if (!Utils.isEmpty(session))
+    {
+      isAuthenticated = true
+      if (session.isPending != undefined)
+        isPending = session.isPending
+      if (session.isAdmin != undefined)
+        isAdmin = session.isAdmin
+    }
+
+    this.userHasAuthenticated(isAuthenticated, isPending, isAdmin)
   }
   
   render() {
     const childProps = {
       isAuthenticated: this.state.isAuthenticated,
-      userHasAuthenticated: this.userHasAuthenticated
+      userHasAuthenticated: this.userHasAuthenticated,
+      isPending: this.state.isPending,
+      isAdmin: this.state.isAdmin
     };
     
     return (
@@ -48,7 +69,18 @@ class App extends Component {
           <Navbar.Collapse>
             <Nav pullRight>
             {this.state.isAuthenticated
-              ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
+              ? <Fragment>
+                  {this.state.isAdmin
+                  ? <LinkContainer to="/admin">
+                      <NavItem>Admin</NavItem>
+                    </LinkContainer>
+                  : null
+                  }
+                  <LinkContainer to="/home">
+                    <NavItem>Home</NavItem>
+                  </LinkContainer>
+                  <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                </Fragment>
               : <Fragment>
                   <LinkContainer to="/register">
                     <NavItem>Signup</NavItem>

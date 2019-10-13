@@ -46,10 +46,14 @@ export default class Register extends Component {
             console.log(response)
             if (response.data.success == true)
             {
-                this.props.userHasAuthenticated(true);
-                alert("Registered")
-                Session.setSessionCookie({ token: response.data.token });
-                this.props.history.push("/pending");
+                Session.setSessionCookie({ 
+                  token: response.data.token,
+                  isAdmin: response.data.isAdmin,
+                  isPending: response.data.isPending
+              });
+              this.props.userHasAuthenticated(true, response.data.isPending, response.data.isAdmin);
+              alert("Registered")
+              this.props.history.push("/pending");
             }
             else
                 alert(response.data.message)

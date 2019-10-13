@@ -36,25 +36,25 @@ export default class Login extends Component {
         axios.post('http://localhost:3000/api/authenticate', login)
         .then(response => {
             console.log(response)
-            if (response.data.success == true)
+            if (response.data.success === true)
             {
-                this.props.userHasAuthenticated(true);
                 Session.setSessionCookie({ 
                     token: response.data.token,
                     isAdmin: response.data.isAdmin,
                     isPending: response.data.isPending
                 });
+                this.props.userHasAuthenticated(true, response.data.isPending, response.data.isAdmin);
                 alert("Logged in")
 
                 if (response.data.isPending == false)
                     this.props.history.push("/home");
                 else
-                this.props.history.push("/pending");
+                  this.props.history.push("/pending");
             }
             else
                 alert(response.data.message)
         })
-        .catch(e => console.log(e))
+        .catch(e => alert(e))
 
         //await Auth.signIn(this.state.email, this.state.password);
       } catch (e) {
@@ -84,6 +84,7 @@ export default class Login extends Component {
             />
           </FormGroup>
           <Button
+            className="Button"
             block
             bsSize="large"
             disabled={!this.validateForm()}

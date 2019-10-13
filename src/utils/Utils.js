@@ -9,10 +9,10 @@ export const isEmpty = function (obj) {
 export const getServerConnectionStr = function (serverConnection, params = undefined) {
     let conStr = serverConnection.domain + ":" + serverConnection.port + "/"
     
-    if (serverConnection.apiPrefix != undefined)
+    if (serverConnection.apiPrefix !== undefined)
         conStr += serverConnection.apiPrefix + "/"
 
-    if (params != undefined) {
+    if (params !== undefined) {
         conStr += "?"
     }
 
