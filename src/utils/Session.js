@@ -17,6 +17,8 @@ export const getSessionCookie = () => {
   if (sessionCookie === undefined) {
     return {};
   } else {
-    return JSON.parse(sessionCookie);
+    let result = JSON.parse(sessionCookie);
+    //setSessionCookie(result)
+    return result
   }
 };

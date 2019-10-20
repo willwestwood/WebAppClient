@@ -3,6 +3,7 @@ import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import axios from 'axios';
 import "./Login.css";
 var Session = require('./../utils/Session');
+var Utils = require('./../utils/Utils');
 
 export default class Login extends Component {
   constructor(props) {
@@ -28,38 +29,40 @@ export default class Login extends Component {
     event.preventDefault();
 
     try {
-        const login = {
-            user: this.state.email,
-            password: this.state.password
-          };
+      const login = {
+          user: this.state.email,
+          password: this.state.password
+        };
 
-        axios.post('http://localhost:3000/api/authenticate', login)
-        .then(response => {
-            console.log(response)
-            if (response.data.success === true)
-            {
-                Session.setSessionCookie({ 
-                    token: response.data.token,
-                    isAdmin: response.data.isAdmin,
-                    isPending: response.data.isPending
-                });
-                this.props.userHasAuthenticated(true, response.data.isPending, response.data.isAdmin);
-                alert("Logged in")
+      axios.post(Utils.getServerConnectionStr('authenticate'), login)
+      .then(response => {
+          console.log(response)
+          if (response.data.success === true)
+          {
+              Session.setSessionCookie({ 
+                  token: response.data.token,
+                  isAdmin: response.data.isAdmin,
+                  isPending: response.data.isPending
+              });
+              this.props.userHasAuthenticated(true, response.data.isPending, response.data.isAdmin);
 
-                if (response.data.isPending == false)
-                    this.props.history.push("/home");
-                else
-                  this.props.history.push("/pending");
-            }
-            else
-                alert(response.data.message)
-        })
-        .catch(e => alert(e))
+              if (response.data.isPending == false)
+                  this.props.history.push("/home");
+              else
+                this.props.history.push("/pending");
+          }
+          else
+              alert(response.data.message)
+      })
+      .catch(e => {
+        console.log(e)
+        this.props.history.push("/error");
+      })
 
-        //await Auth.signIn(this.state.email, this.state.password);
-      } catch (e) {
-        alert(e.message);
-      }
+      //await Auth.signIn(this.state.email, this.state.password);
+    } catch (e) {
+      alert(e.message);
+    }
   }
 
   render() {

@@ -4,6 +4,7 @@ import axios from 'axios';
 import "./Register.css";
 import qs from 'qs';
 var Session = require('./../utils/Session');
+var Utils = require('./../utils/Utils');
 
 export default class Register extends Component {
   constructor(props) {
@@ -13,7 +14,8 @@ export default class Register extends Component {
         firstName: "",
         secondName: "",
         email: "",
-        password: ""
+        password: "",
+        confirmPassword: ""
     };
   }
 
@@ -21,7 +23,8 @@ export default class Register extends Component {
     return this.state.email.length > 0 
     && this.state.password.length > 0
     && this.state.firstName.length > 0
-    && this.state.secondName.length > 0;
+    && this.state.secondName.length > 0
+    && this.state.password === this.state.confirmPassword;
   }
 
   handleChange = event => {
@@ -35,13 +38,13 @@ export default class Register extends Component {
 
     try {
         const register = {
-            'firstName': this.state.firstName,
-            'secondName': this.state.secondName,
-            'emailAddress': this.state.email,
-            'password': this.state.password
+            firstName: this.state.firstName,
+            secondName: this.state.secondName,
+            emailAddress: this.state.email,
+            password: this.state.password
         }
 
-        axios.post('http://localhost:3000/api/register?' + qs.stringify(register))
+        axios.post(Utils.getServerConnectionStr('register', register))
         .then(response => {
             console.log(response)
             if (response.data.success == true)
@@ -52,7 +55,6 @@ export default class Register extends Component {
                   isPending: response.data.isPending
               });
               this.props.userHasAuthenticated(true, response.data.isPending, response.data.isAdmin);
-              alert("Registered")
               this.props.history.push("/pending");
             }
             else
@@ -103,13 +105,20 @@ export default class Register extends Component {
               onChange={this.handleChange}
               type="password"
             />
+            </FormGroup>
+            <FormGroup controlId="confirmPassword" bsSize="large">
+            <ControlLabel>Confirm Password</ControlLabel>
+            <FormControl
+              value={this.state.confirmPassword}
+              onChange={this.handleChange}
+              type="password"
+            />
           </FormGroup>
           <Button
             block
             bsSize="large"
             disabled={!this.validateForm()}
-            type="submit"
-          >
+            type="submit">
             Register
           </Button>
         </form>

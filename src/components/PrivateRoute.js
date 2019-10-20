@@ -26,21 +26,21 @@ export default ({ component: Component, ...rest }) => (
           if (!equalsPath(rest.path, "pending"))
             return <Redirect to='/pending' />
           else
-            return <Component {...props} />
+            return <Component {...rest.props} />
         }
 
         if (equalsPath(rest.path, "admin"))
         {
           if (rest.props.isAdmin)
-            return <Component {...props} />
+            return <Component {...rest.props} />
           else
             return <Redirect to='/home' />
         }
 
-        return <Component {...props} />
+        return <Component {...rest.props} />
       }
       else if (equalsPath(rest.path, "login"))
-        return <Component {...props} />
+        return <Component {...rest.props} />
       else
         return <Redirect to='/login' />
     }} />

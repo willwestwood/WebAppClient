@@ -10,11 +10,25 @@ var Utils = require('./utils/Utils');
 class App extends Component {
   constructor(props) {
     super(props);
-  
+
+    let isAuthenticated = false
+    let isAdmin = false
+    let isPending = false
+
+    let session = Session.getSessionCookie()
+    if (!Utils.isEmpty(session))
+    {
+      isAuthenticated = true
+      if (session.isPending != undefined)
+        isPending = session.isPending
+      if (session.isAdmin != undefined)
+        isAdmin = session.isAdmin
+    }
+
     this.state = {
-      isAuthenticated: false,
-      isPending: true,
-      isAdmin: false
+      isAuthenticated: isAuthenticated,
+      isPending: isPending,
+      isAdmin: isAdmin
     };
   }
   
@@ -29,24 +43,6 @@ class App extends Component {
   handleLogout = event => {
     this.userHasAuthenticated(false, false, false)
     Session.resetSessionCookie()
-  }  
-
-  componentWillMount() {
-    let session = Session.getSessionCookie()
-    let isAuthenticated = false
-    let isAdmin = false
-    let isPending = false
-
-    if (!Utils.isEmpty(session))
-    {
-      isAuthenticated = true
-      if (session.isPending != undefined)
-        isPending = session.isPending
-      if (session.isAdmin != undefined)
-        isAdmin = session.isAdmin
-    }
-
-    this.userHasAuthenticated(isAuthenticated, isPending, isAdmin)
   }
   
   render() {
