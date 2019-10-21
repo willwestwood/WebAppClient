@@ -31,11 +31,9 @@ export default function Home(props) {
       }
   
       try {
-        const _notes = await loadNotes();
+        const notes = await loadNotes();
         setIsLoading(false);
-        console.log('notes:')
-        console.log(_notes)
-        setNotes(_notes);
+        setNotes(notes);
       } catch (e) {
         alert(e);
       }
@@ -47,22 +45,14 @@ export default function Home(props) {
   }, [props.isAuthenticated]);
   
   async function loadNotes() {
-    //return API.get("notes", "/notes");
-
-    // return [{
-    //   noteId: 1,
-    //   content: "This is a test note",
-    //   createdAt: "2015-01-01"
-    // }]
-
-    let body = {
-      token: Session.getSessionCookie().token
+    let params = {
+      'x-access-token': Session.getSessionCookie().token
     }
 
     var companies = []
 
     //try {
-      await axios.get(Utils.getServerConnectionStr('companies', body))
+      await axios.get(Utils.getServerConnectionStr('companies'), { headers: params })
       .then(response => {
         if (response.data.success === 'true')
           companies = response.data.companies
@@ -78,7 +68,6 @@ export default function Home(props) {
   }
 
   function renderNotesList(notes) {
-    console.log('HELLO')
     return [{}].concat(notes).map((note, i) =>
       i !== 0 ? (
         <LinkContainer key={note.id} to={`/notes/${note.id}`}>
@@ -87,7 +76,7 @@ export default function Home(props) {
           </ListGroupItem>
         </LinkContainer>
       ) : (
-        <LinkContainer key="new" to="/notes/new">
+        <LinkContainer key="new" to="/companies/new">
           <ListGroupItem>
             <h4>
               <b>{"\uFF0B"}</b> Create a new note
@@ -112,7 +101,7 @@ export default function Home(props) {
       <div className="notes">
         <PageHeader>Your Companies</PageHeader>
         <ListGroup>
-          {notes.length > 0 && renderNotesList(notes)}
+          {!isLoading && renderNotesList(notes)}
         </ListGroup>
       </div>
     );

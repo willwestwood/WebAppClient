@@ -17,30 +17,30 @@ function equalsPath(left, right)
     return left === right
 }
 
-export default ({ component: Component, ...rest }) => (
+export default ({ component: Component, props: cProps, ...rest }) => (
     <Route {...rest} render={(props) => {
-      if (rest.props.isAuthenticated)
+      if (cProps.isAuthenticated)
       {
-        if (rest.props.isPending)
+        if (cProps.isPending)
         {
           if (!equalsPath(rest.path, "pending"))
             return <Redirect to='/pending' />
           else
-            return <Component {...rest.props} />
+            return <Component {...props} {...cProps} />
         }
 
         if (equalsPath(rest.path, "admin"))
         {
-          if (rest.props.isAdmin)
-            return <Component {...rest.props} />
+          if (cProps.isAdmin)
+            return <Component {...props} {...cProps} />
           else
             return <Redirect to='/home' />
         }
 
-        return <Component {...rest.props} />
+        return <Component {...props} {...cProps} />
       }
       else if (equalsPath(rest.path, "login"))
-        return <Component {...rest.props} />
+        return <Component {...props} {...cProps} />
       else
         return <Redirect to='/login' />
     }} />

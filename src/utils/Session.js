@@ -18,7 +18,7 @@ export const getSessionCookie = () => {
     return {};
   } else {
     let result = JSON.parse(sessionCookie);
-    //setSessionCookie(result)
+    setSessionCookie(result)
     return result
   }
 };
