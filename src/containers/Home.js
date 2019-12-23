@@ -2,26 +2,10 @@ import React, { useState, useEffect } from "react";
 import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import "./Home.css";
-import axios from 'axios';
 var Utils = require('./../utils/Utils');
-var Session = require('./../utils/Session');
-
-// export default class Home extends Component {
-//   render() {
-//     console.log(Session.getSessionCookie())
-//     return (
-//       <div className="Home">
-//         <div className="lander">
-//           <h1>CRM</h1>
-//           <p>A customer relationship management tool</p>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
 
 export default function Home(props) {
-  const [notes, setNotes] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -31,55 +15,41 @@ export default function Home(props) {
       }
   
       try {
-        const notes = await loadNotes();
+        const companies = await loadCompanies();
+        await Utils.sortArray(companies, 'name')
         setIsLoading(false);
-        setNotes(notes);
+        setCompanies(companies);
       } catch (e) {
         alert(e);
       }
-  
-      //setIsLoading(false);
     }
   
     onLoad();
   }, [props.isAuthenticated]);
   
-  async function loadNotes() {
-    let params = {
-      'x-access-token': Session.getSessionCookie().token
-    }
-
-    var companies = []
-
-    //try {
-      await axios.get(Utils.getServerConnectionStr('companies'), { headers: params })
-      .then(response => {
-        if (response.data.success === 'true')
-          companies = response.data.companies
-        else
-          alert(response.data.message)
-      })
-      .catch(e => {
-        console.log(e)
-        this.props.history.push("/error");
-      })
-
-      return companies
+  async function loadCompanies() {
+    let data = await Utils.serverGetRequest('companies', true, props.history)
+    if (Utils.isEmpty(data))
+      return data
+    else
+      return data.companies
   }
 
-  function renderNotesList(notes) {
-    return [{}].concat(notes).map((note, i) =>
+  function renderCompaniesList(companies) {
+    return [{}].concat(companies).map((company, i) =>
       i !== 0 ? (
-        <LinkContainer key={note.id} to={`/notes/${note.id}`}>
-          <ListGroupItem header={note.name.trim().split("\n")[0]}>
-            {"Created: " + new Date().toLocaleString()}
+        <LinkContainer key={company.id} to={`/companies/${company.id}`}>
+          <ListGroupItem header={company.name.trim().split("\n")[0]}>
+            {company.industry === null ? "" : (company.industry + " - ")}
+            {company.type}
+            {/* {"Created: " + new Date().toLocaleString()} */}
           </ListGroupItem>
         </LinkContainer>
       ) : (
         <LinkContainer key="new" to="/companies/new">
           <ListGroupItem>
             <h4>
-              <b>{"\uFF0B"}</b> Create a new note
+              <b>{"\uFF0B"}</b> Create a new company
             </h4>
           </ListGroupItem>
         </LinkContainer>
@@ -96,12 +66,12 @@ export default function Home(props) {
     );
   }
 
-  function renderNotes() {
+  function renderCompanies() {
     return (
-      <div className="notes">
-        <PageHeader>Your Companies</PageHeader>
+      <div className="companies">
+        <PageHeader>Companies</PageHeader>
         <ListGroup>
-          {!isLoading && renderNotesList(notes)}
+          {!isLoading && renderCompaniesList(companies)}
         </ListGroup>
       </div>
     );
@@ -109,7 +79,7 @@ export default function Home(props) {
 
   return (
     <div className="Home">
-      {props.isAuthenticated ? renderNotes() : renderLander()}
+      {props.isAuthenticated ? renderCompanies() : renderLander()}
     </div>
   );
 }

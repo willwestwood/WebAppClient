@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { FormGroup, FormControl, ControlLabel, DropdownButton, MenuItem } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import axios from 'axios';
@@ -35,7 +35,7 @@ export default function NewCompany(props) {
     }
   }
     
-  function createCompany(name, industry, type) {
+  async function createCompany(name, industry, type) {
     try {
       const company = {
           name: name,
@@ -47,9 +47,11 @@ export default function NewCompany(props) {
         'x-access-token': Session.getSessionCookie().token
       }
 
+      console.log('PARAMS')
+      console.log(params)
+
       axios.post(Utils.getServerConnectionStr('companies', company), {}, { headers: params })
       .then(response => {
-          console.log(response)
           if (response.data.success == true)
           {
             alert("Success!")

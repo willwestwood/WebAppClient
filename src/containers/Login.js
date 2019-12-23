@@ -55,7 +55,7 @@ export default class Login extends Component {
               alert(response.data.message)
       })
       .catch(e => {
-        console.log(e)
+        console.log(e.message)
         this.props.history.push("/error");
       })
 

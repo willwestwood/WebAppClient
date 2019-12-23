@@ -3,7 +3,7 @@ import * as Cookies from "js-cookie";
 export const setSessionCookie = (session) => {
   Cookies.remove("session");
   var now = new Date();
-  now.setTime(now.getTime() + 1 * 30 * 1000);
+  now.setMinutes(now.getMinutes() + 30)
   Cookies.set("session", session, { expires: now });
 };
 

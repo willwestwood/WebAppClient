@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./Admin.css";
-var Session = require('../utils/Session');
 
 export default class Admin extends Component {
   constructor(props) {
@@ -8,8 +7,6 @@ export default class Admin extends Component {
   }
 
   render() {
-    console.log(Session.getSessionCookie())
-    console.log(this.props)
     return (
       <div className="Admin">
         <div className="lander">

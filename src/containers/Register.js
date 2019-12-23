@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import axios from 'axios';
 import "./Register.css";
-import qs from 'qs';
 var Session = require('./../utils/Session');
 var Utils = require('./../utils/Utils');
 
