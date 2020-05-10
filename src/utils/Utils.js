@@ -37,49 +37,80 @@ exports.getKeyByValue = async function(object, value) {
     return await Object.keys(object).find(key => object[key] == value);
 }
 
+async function getRequestHeader(history)
+{
+    let token = Session.getSessionCookie().token
+    if (exports.isEmpty(token)) {
+        alert(await enums.getErrorString(enums.ErrorType.INVALID_TOKEN))
+        history.push("/login")
+        return {}
+    }
+
+    return {
+        'x-access-token': Session.getSessionCookie().token
+    }
+}
+
+async function handleError(response, history)
+{
+    var data = {}
+    console.log(response.data.message)
+    switch(response.data.errorId) {
+        case enums.ErrorType.AUTHENTICATION_FAILED:
+        case enums.ErrorType.INVALID_TOKEN:
+        case enums.ErrorType.NO_TOKEN:
+            alert(enums.getErrorString(response.data.errorId))
+            Session.resetSessionCookie()
+            history.push("/login")
+            break
+        default:
+            data = enums.getErrorString(response.data.errorId)
+    }
+    return data
+}
+
 exports.serverGetRequest = async function (route, useToken, history, params = undefined, action = ''){
     if (action != "")
         route += "/" + action
 
     let header = {}
-    if (useToken === true) {
-        let token = Session.getSessionCookie().token
-        if (exports.isEmpty(token)) {
-            alert(await enums.getErrorString(enums.ErrorType.INVALID_TOKEN))
-            history.push("/login")
-            return {}
-        }
-
-        header = {
-            'x-access-token': Session.getSessionCookie().token
-        }
-    }
+    if (useToken == true)
+        header = await getRequestHeader(history)
 
     let data = {}
     await axios.get(exports.getServerConnectionStr(route, params), { headers: header })
     .then(response => {
         if (response.data.success === 'true')
             data = response.data
-        else {
-            console.log(response.data.message)
-            switch(response.data.errorId) {
-                case enums.ErrorType.AUTHENTICATION_FAILED:
-                case enums.ErrorType.INVALID_TOKEN:
-                case enums.ErrorType.NO_TOKEN:
-                    alert(enums.getErrorString(response.data.errorId))
-                    Session.resetSessionCookie()
-                    history.push("/login")
-                    break
-                default:
-                    data = enums.getErrorString(response.data.errorId)
-            }
-        }
+        else
+            data = handleError(response, history)
       })
       .catch(e => {
         console.log(e)
         history.push("/error");
     })
     return data
+}
+
+exports.serverPostRequest = async function (route, useToken, history, params = undefined, action = ''){
+    if (action != "")
+        route += "/" + action
+
+    let header = {}
+    if (useToken == true)
+        header = await getRequestHeader(history)
+
+    await axios.post(exports.getServerConnectionStr(route, params), {}, { headers: header })
+    .then(response => {
+        if (response.data.success == true)
+            alert("Success!")
+        else
+            handleError(response, history)
+    })
+    .catch(e => {
+        console.log(e)
+        history.push("/error");
+    })
 }
 
 exports.sortArray = async function (arr, prop) {

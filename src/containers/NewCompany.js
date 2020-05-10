@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { FormGroup, FormControl, ControlLabel, DropdownButton, MenuItem } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
-import axios from 'axios';
 import "./NewCompany.css";
 var Session = require('./../utils/Session');
 var Utils = require('./../utils/Utils');
@@ -34,7 +33,7 @@ export default function NewCompany(props) {
         setIsLoading(false);
     }
   }
-    
+  
   async function createCompany(name, industry, type) {
     try {
       const company = {
@@ -43,25 +42,8 @@ export default function NewCompany(props) {
           industry: industry
       }
 
-      let params = {
-        'x-access-token': Session.getSessionCookie().token
-      }
+      await Utils.serverPostRequest('companies', true, props.history, company)
 
-      console.log('PARAMS')
-      console.log(params)
-
-      axios.post(Utils.getServerConnectionStr('companies', company), {}, { headers: params })
-      .then(response => {
-          if (response.data.success == true)
-          {
-            alert("Success!")
-          }
-          else
-              alert(response.data.message)
-      })
-      .catch(e => console.log(e))
-
-      //await Auth.signIn(this.state.email, this.state.password);
     } catch (e) {
       alert(e.message);
     }

@@ -30,9 +30,9 @@ export default class Login extends Component {
 
     try {
       const login = {
-          user: this.state.email,
-          password: this.state.password
-        };
+        user: this.state.email,
+        password: this.state.password
+      }
 
       axios.post(Utils.getServerConnectionStr('authenticate'), login)
       .then(response => {
@@ -55,7 +55,7 @@ export default class Login extends Component {
               alert(response.data.message)
       })
       .catch(e => {
-        console.log(e.message)
+        console.log3(e.message)
         this.props.history.push("/error");
       })
 
