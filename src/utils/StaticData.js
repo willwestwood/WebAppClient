@@ -6,3 +6,5 @@ exports.serverConnection = {
     port: 3000,
     apiPrefix: "api"
 }
+
+exports.companyTypes = ["Customer", "Supplier"];

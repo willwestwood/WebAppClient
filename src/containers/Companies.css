@@ -1,8 +1,11 @@
-.Notes form {
-    padding-bottom: 5px;
+.Companies form {
+    padding-bottom: 10px;
   }
   
-  .Notes form textarea {
-    height: 300px;
-    font-size: 24px;
-  }
+.Companies form textarea {
+  height: 2.5pc;
+}
+
+.companyType {
+  offset: 10pc;
+}

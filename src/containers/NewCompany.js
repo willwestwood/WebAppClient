@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { FormGroup, FormControl, ControlLabel, DropdownButton, MenuItem } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import "./NewCompany.css";
-var Session = require('./../utils/Session');
 var Utils = require('./../utils/Utils');
-
-const companyTypes = ["Customer", "Supplier"];
+var companyTypes = require('./../utils/StaticData').companyTypes;
 
 export default function NewCompany(props) {
   const [companyName, setCompanyName] = useState("");
@@ -17,7 +15,7 @@ export default function NewCompany(props) {
     return companyName.length > 0;
   }
 
-  async function handleSelect(eventKey, event) {
+  async function handleCompanyTypeSelect(eventKey, event) {
     setCompanyType(companyTypes[eventKey]);
   }
 
@@ -76,7 +74,7 @@ export default function NewCompany(props) {
           <DropdownButton
             title={companyType}
             id = "documentType"
-            onSelect={handleSelect.bind(this)}
+            onSelect={handleCompanyTypeSelect.bind(this)}
             className="companyType"
           >
             {companyTypes.map((opt, i) => (

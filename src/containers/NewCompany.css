@@ -2,11 +2,11 @@
     padding-bottom: 15px;
   }
   
-  .NewCompany form textarea {
-    height: 300px;
-    font-size: 24px;
-  }
+.NewCompany form textarea {
+  height: 300px;
+  font-size: 24px;
+}
 
-  .companyType {
-    offset: 0;
-  }
+.companyType {
+  offset: 0;
+}
