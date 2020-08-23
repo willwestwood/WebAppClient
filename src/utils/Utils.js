@@ -59,12 +59,12 @@ async function handleError(response, history)
         case enums.ErrorType.AUTHENTICATION_FAILED:
         case enums.ErrorType.INVALID_TOKEN:
         case enums.ErrorType.NO_TOKEN:
-            alert(enums.getErrorString(response.data.errorId))
+            alert(await enums.getErrorString(response.data.errorId))
             Session.resetSessionCookie()
             history.push("/login")
             break
         default:
-            data = enums.getErrorString(response.data.errorId)
+            data = await enums.getErrorString(response.data.errorId)
     }
     return data
 }
@@ -105,7 +105,7 @@ exports.serverPostRequest = async function (route, useToken, history, params = u
         if (response.data.success == true)
             alert("Success!")
         else
-            handleError(response, history)
+            handleError(response, history)  
     })
     .catch(e => {
         console.log(e)
