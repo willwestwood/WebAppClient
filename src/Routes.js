@@ -4,7 +4,6 @@ import Home from "./containers/Home";
 import Pending from "./containers/Pending";
 import Login from "./containers/Login";
 import Register from "./containers/Register";
-import NewCompany from "./containers/NewCompany";
 import Companies from "./containers/Companies";
 import Admin from "./containers/Admin";
 import NotFound from "./containers/NotFound";
@@ -20,7 +19,7 @@ export default ({ childProps }) =>
     <PrivateRoute path="/admin" exact component={Admin} props={childProps} />
     <AppliedRoute path="/login" exact component={Login} props={childProps} />
     <AppliedRoute path="/register" exact component={Register} props={childProps} />
-    <PrivateRoute path="/companies/new" exact component={NewCompany} props={childProps} />
+    <PrivateRoute path="/companies/new" exact component={Companies} props={childProps} />
     <PrivateRoute path="/companies/:id" exact component={Companies} props={childProps} />
     <AppliedRoute path="/error" exact component={Error} props={childProps}/>
     { /* Finally, catch all unmatched routes */ }
