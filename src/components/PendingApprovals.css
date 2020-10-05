@@ -1,0 +1,30 @@
+.PendingApprovals {
+    width: 100%;
+    height: 100%;
+  }
+
+.PendingApprovals h4 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  width: 50%;
+  text-align: center;
+}
+
+.PendingApprovals button {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 600;
+    width: 30%;
+  }
+
+.PendingApprovals .lander p {
+  color: #999;
+}
+  
+.PendingApprovals .Items {
+  width: 100%;
+  height: 100%;
+}
+
+.PendingApprovals .approval {
+    display: flex;
+}

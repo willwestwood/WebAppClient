@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FormGroup, FormControl, ControlLabel, DropdownButton, MenuItem } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import "./Companies.css";
@@ -6,14 +6,13 @@ var Utils = require('./../utils/Utils');
 var companyTypes = require('./../utils/StaticData').companyTypes;
 
 export default function Companies(props) {
-  const [isNew, setIsNew] = useState(!('id' in props.match.params))
-  const [company, setCompany] = useState(null);
+  const isNew = !('id' in props.match.params)
+
   const [name, setName] = useState("");
   const [industry, setIndustry] = useState("");
   const [type, setType] = useState(companyTypes[0]);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [companyType, setCompanyType] = useState(companyTypes[0]);
 
   async function handleCompanyTypeSelect(eventKey, event) {
     setType(companyTypes[eventKey])
@@ -39,7 +38,6 @@ export default function Companies(props) {
       async function onLoad() {
         try {
           const company = await loadCompany();
-          setCompany(company);
           setName(company.name)
           setIndustry(company.industry)
           setType(company.type)
@@ -61,19 +59,19 @@ export default function Companies(props) {
     setIsLoading(true);
 
     if (isNew)
-      handleCreate(event)
+      handleCreate()
     else
-      handleSave(event)
+      handleSave()
   }
 
   async function handleCreate() {
     try {
-      await createCompany(name, industry, companyType);
-      props.history.push("/home");
+      await createCompany(name, industry, type);
     } catch (e) {
         alert(e);
         setIsLoading(false);
     }
+    props.history.push("/home");
   }
 
   async function createCompany(name, industry, type) {
@@ -126,7 +124,8 @@ export default function Companies(props) {
   
   return (
     <div className="Companies">
-      {<form onSubmit={handleSubmit}>
+      <h1>{isNew ? "New Company" : "Edit Company"}</h1>
+      <form onSubmit={handleSubmit}>
           <ControlLabel>Name</ControlLabel>
           <FormGroup controlId="content">
             <FormControl
@@ -187,7 +186,6 @@ export default function Companies(props) {
             Delete
           </LoaderButton>}
         </form>
-      }
     </div>
   );
 }

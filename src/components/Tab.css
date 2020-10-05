@@ -1,25 +1,26 @@
-.Admin .lander {
-    text-align: center;
-  }
-  
-.Admin .lander h1 {
+.Tabs {
+    height: 100%;
+}
+
+.Tabs .lander h1 {
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
 }
 
-.Admin h4 {
+.Tabs h4 {
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
 }
 
-.Admin .lander p {
+.Tabs .lander p {
   color: #999;
 }
   
-.Admin .Options {
+.Tabs .tablist {
   width: 100%;
+  height: 100%;
 } 
 
-.Admin .item {
+.Tabs .item {
   border-radius: 0;
 }

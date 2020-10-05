@@ -1,0 +1,13 @@
+.SplitPane {
+    border-width: 1px;
+    border-color: rgb(200, 200, 200);
+    border-style: solid;
+    display: flex;
+}
+
+/* Split the screen in half */
+.SplitPane .split {
+    height: 100%;
+    width: 100%;
+    padding: 1%;
+}
