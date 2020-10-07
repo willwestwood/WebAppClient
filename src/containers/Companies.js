@@ -97,9 +97,7 @@ export default function Companies(props) {
       industry: industry
     }
 
-    console.log(company)
     await Utils.serverPostRequest('companies', true, props.history, company, 'update')
-    
     props.history.push("/home");
   }
   
@@ -124,7 +122,7 @@ export default function Companies(props) {
   
   return (
     <div className="Companies">
-      <h1>{isNew ? "New Company" : "Edit Company"}</h1>
+      <h1 className="description">{isNew ? "New Company" : "Edit Company"}</h1>
       <form onSubmit={handleSubmit}>
           <ControlLabel>Name</ControlLabel>
           <FormGroup controlId="content">
@@ -156,7 +154,7 @@ export default function Companies(props) {
             ))}
           </DropdownButton>
         </FormGroup>
-          {!isNew && <LoaderButton
+          {!isNew && <LoaderButton className="buttons"
             block
             type="submit"
             bsSize="large"
@@ -166,7 +164,7 @@ export default function Companies(props) {
           >
             Save
           </LoaderButton>}
-          {isNew && <LoaderButton
+          {isNew && <LoaderButton className="buttons"
           block
           type="submit"
           bsSize="large"
@@ -176,7 +174,7 @@ export default function Companies(props) {
         >
           Create
         </LoaderButton>}
-          {!isNew && <LoaderButton
+          {!isNew && <LoaderButton className="buttons"
             block
             bsSize="large"
             bsStyle="danger"

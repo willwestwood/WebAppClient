@@ -7,6 +7,8 @@ var enums = require('./enums')
 var exports = module.exports = {}
 
 exports.isEmpty = function (obj) {
+    if (obj === null || obj === undefined)
+        return true
     for(var key in obj) {
         if(obj.hasOwnProperty(key))
             return false;

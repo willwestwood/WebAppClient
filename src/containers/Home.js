@@ -8,6 +8,14 @@ export default function Home(props) {
   const [companies, setCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  async function loadCompanies() {
+    let data = await Utils.serverGetRequest('companies', true, props.history)
+    if (Utils.isEmpty(data))
+      return data
+    else
+      return data.companies
+  }
+
   useEffect(() => {
     async function onLoad() {
       if (!props.isAuthenticated) {
@@ -26,14 +34,6 @@ export default function Home(props) {
   
     onLoad();
   }, [props.isAuthenticated]);
-  
-  async function loadCompanies() {
-    let data = await Utils.serverGetRequest('companies', true, props.history)
-    if (Utils.isEmpty(data))
-      return data
-    else
-      return data.companies
-  }
 
   function renderCompaniesList(companies) {
     return [{}].concat(companies).map((company, i) =>

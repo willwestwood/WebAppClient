@@ -1,21 +1,8 @@
-.Admin .lander {
-    text-align: center;
-  }
-  
-.Admin .lander h1 {
-  font-family: "Open Sans", sans-serif;
-  font-weight: 600;
-}
-
 .Admin h4 {
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
 }
 
-.Admin .lander p {
-  color: #999;
-}
-  
 .Admin .Options {
   width: 100%;
 } 

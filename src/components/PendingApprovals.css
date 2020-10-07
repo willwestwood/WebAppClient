@@ -5,21 +5,23 @@
 
 .PendingApprovals h4 {
   font-family: "Open Sans", sans-serif;
-  font-weight: 600;
-  width: 50%;
+  font-weight: 400;
   text-align: center;
 }
 
-.PendingApprovals button {
+.PendingApprovals .description {
     font-family: "Open Sans", sans-serif;
-    font-weight: 600;
-    width: 30%;
+    font-weight: 400;
+    text-align: center;
+    flex:0.7;
   }
 
-.PendingApprovals .lander p {
-  color: #999;
-}
-  
+.PendingApprovals .buttons {
+    margin: 1%;
+    flex: 0.15;
+    float: right;
+  }
+
 .PendingApprovals .Items {
   width: 100%;
   height: 100%;
@@ -27,4 +29,5 @@
 
 .PendingApprovals .approval {
     display: flex;
+    justify-content:center;
 }
